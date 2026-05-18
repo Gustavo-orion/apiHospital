@@ -1,0 +1,40 @@
+package com.edu.fatec.apiHospital.controllers;
+
+@RestController
+@RequestMapping("/api/medicos")
+@CrossOrigin(origins = "*") // Permite que o Android acesse sem bloqueio de CORS
+public class MedicoController {
+
+    @Autowired
+    private MedicoRepository repository;
+
+    @GetMapping
+    public List<Medico> listar() {
+        return repository.findAll();
+    }
+
+    @PostMapping
+    public ResponseEntity<Medico> salvar(@RequestBody Medico medico) {
+        Medico salvo = repository.save(medico);
+        return ResponseEntity.status(HttpStatus.CREATED).body(salvo);
+    }
+}
+@RestController
+@RequestMapping("/api/medicos")
+@CrossOrigin(origins = "*") // Permite que o Android acesse sem bloqueio de CORS
+public class MedicoController {
+
+    @Autowired
+    private MedicoRepository repository;
+
+    @GetMapping
+    public List<Medico> listar() {
+        return repository.findAll();
+    }
+
+    @PostMapping
+    public ResponseEntity<Medico> salvar(@RequestBody Medico medico) {
+        Medico salvo = repository.save(medico);
+        return ResponseEntity.status(HttpStatus.CREATED).body(salvo);
+    }
+}

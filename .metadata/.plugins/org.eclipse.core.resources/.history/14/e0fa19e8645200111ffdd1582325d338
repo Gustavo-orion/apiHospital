@@ -1,0 +1,17 @@
+package com.edu.fatec.apiHospital.models;
+package com.models;
+
+@Entity
+@Table(name = "pacientes")
+public class Paciente {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String nome;
+    private int idade;
+    private String pacienteId; // Ex: #4429
+    private String ultimaVisita;
+    private String status;
+
+    // Construtores, Getters e Setters
+}

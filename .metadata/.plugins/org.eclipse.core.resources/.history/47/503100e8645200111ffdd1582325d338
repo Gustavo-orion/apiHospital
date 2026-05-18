@@ -1,0 +1,18 @@
+package com.edu.fatec.apiHospital.models;
+package com.models;
+
+@Entity
+@Table(name = "medicos")
+public class Medico {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String nome;
+    private String cpf;
+    private String crm;
+    private String especialidade;
+
+    // Construtores, Getters e Setters
+}
+   
+

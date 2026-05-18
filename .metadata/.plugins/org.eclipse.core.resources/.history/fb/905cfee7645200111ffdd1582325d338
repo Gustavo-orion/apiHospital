@@ -1,0 +1,25 @@
+package com.edu.fatec.apiHospital.controllers;
+
+@RestController
+@RequestMapping("/api/pacientes")
+@CrossOrigin(origins = "*")
+public class PacienteController {
+
+    @Autowired
+    private PacienteRepository repository;
+
+    @GetMapping
+    public List<Paciente> listar() {
+        return repository.findAll();
+    }
+
+    @PostMapping
+    public ResponseEntity<Paciente> salvar(@RequestBody Paciente paciente) {
+        // Lógica simples para gerar o ID visual #XXXX se não vier do App
+        if (paciente.getPacienteId() == null) {
+            paciente.setPacienteId("#" + (int)(Math.random() * 9000 + 1000));
+        }
+        Paciente salvo = repository.save(paciente);
+        return ResponseEntity.status(HttpStatus.CREATED).body(salvo);
+    }
+}
