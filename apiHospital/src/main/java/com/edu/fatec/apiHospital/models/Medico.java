@@ -1,6 +1,4 @@
 package com.edu.fatec.apiHospital.models;
-import lombok.Getter;
-import lombok.Setter;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,7 +15,11 @@ public class Medico {
     private String cpf;
     private String crm;
     private String especialidade;
-	public Long getId() {
+
+    public Medico() {
+    }
+
+    public Long getId() {
 		return id;
 	}
 	public void setId(Long id) {
@@ -56,7 +58,7 @@ public class Medico {
 		this.especialidade = especialidade;
 	}
 
-    // Construtores, Getters e Setters
+    
 }
    
 
