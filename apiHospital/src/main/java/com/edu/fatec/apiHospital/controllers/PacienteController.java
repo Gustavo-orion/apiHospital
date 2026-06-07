@@ -31,12 +31,15 @@ public class PacienteController {
         return repository.findAll();
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Paciente> buscarPorId(@PathVariable Long id) {
+        return repository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @PostMapping
     public ResponseEntity<Paciente> salvar(@RequestBody Paciente paciente) {
-        // Lógica simples para gerar o ID visual #XXXX se não vier do App
-        if (paciente.getPacienteId() == null) {
-            paciente.setPacienteId("#" + (int)(Math.random() * 9000 + 1000));
-        }
         Paciente salvo = repository.save(paciente);
         return ResponseEntity.status(HttpStatus.CREATED).body(salvo);
     }
@@ -46,10 +49,12 @@ public class PacienteController {
         return repository.findById(id)
                 .map(existente -> {
                     existente.setNome(paciente.getNome());
-                    existente.setIdade(paciente.getIdade());
-                    existente.setPacienteId(paciente.getPacienteId());
-                    existente.setUltimaVisita(paciente.getUltimaVisita());
-                    existente.setStatus(paciente.getStatus());
+                    existente.setCpf(paciente.getCpf());
+                    existente.setTelefone(paciente.getTelefone());
+                    existente.setCondicao(paciente.getCondicao());
+                    existente.setDataNascimento(paciente.getDataNascimento());
+                    existente.setEmail(paciente.getEmail());
+                    existente.setEndereco(paciente.getEndereco());
                     Paciente atualizado = repository.save(existente);
                     return ResponseEntity.ok(atualizado);
                 })

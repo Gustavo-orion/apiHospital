@@ -14,27 +14,29 @@ public class DatabaseInit implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) {
+        // Stored procedure para atualizar médico
         jdbcTemplate.execute("DROP PROCEDURE IF EXISTS atualizar_medico");
 
-        String sql = """
+        String sqlMedico = """
             CREATE PROCEDURE atualizar_medico(
                 IN p_id BIGINT,
                 IN p_nome VARCHAR(255),
                 IN p_cpf VARCHAR(20),
                 IN p_crm VARCHAR(50),
-                IN p_especialidade VARCHAR(100)
+                IN p_especialidade VARCHAR(100),
+                IN p_telefone VARCHAR(20)
             )
             BEGIN
                 UPDATE medicos
                 SET nome = p_nome,
                     cpf = p_cpf,
                     crm = p_crm,
-                    especialidade = p_especialidade
+                    especialidade = p_especialidade,
+                    telefone = p_telefone
                 WHERE id = p_id;
             END
             """;
 
-        jdbcTemplate.execute(sql);
+        jdbcTemplate.execute(sqlMedico);
     }
 }
-

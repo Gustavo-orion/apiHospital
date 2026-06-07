@@ -1,4 +1,5 @@
 package com.edu.fatec.apiHospital.models;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,10 +13,12 @@ public class Paciente {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
-    private int idade;
-    private String pacienteId; // Ex: #4429
-    private String ultimaVisita;
-    private String status;
+    private String cpf;
+    private String telefone;
+    private String condicao;
+    private String dataNascimento;
+    private String email;
+    private String endereco;
 
     public Paciente() {
     }
@@ -36,35 +39,51 @@ public class Paciente {
         this.nome = nome;
     }
 
-    public int getIdade() {
-        return idade;
+    public String getCpf() {
+        return cpf;
     }
 
-    public void setIdade(int idade) {
-        this.idade = idade;
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
     }
 
-    public String getPacienteId() {
-        return pacienteId;
+    public String getTelefone() {
+        return telefone;
     }
 
-    public void setPacienteId(String pacienteId) {
-        this.pacienteId = pacienteId;
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
     }
 
-    public String getUltimaVisita() {
-        return ultimaVisita;
+    public String getCondicao() {
+        return condicao;
     }
 
-    public void setUltimaVisita(String ultimaVisita) {
-        this.ultimaVisita = ultimaVisita;
+    public void setCondicao(String condicao) {
+        this.condicao = condicao;
     }
 
-    public String getStatus() {
-        return status;
+    public String getDataNascimento() {
+        return dataNascimento;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setDataNascimento(String dataNascimento) {
+        this.dataNascimento = dataNascimento;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
     }
 }

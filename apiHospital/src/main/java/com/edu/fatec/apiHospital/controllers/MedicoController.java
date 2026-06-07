@@ -20,7 +20,7 @@ import com.edu.fatec.apiHospital.repository.MedicoRepository;
 
 @RestController
 @RequestMapping("/api/medicos")
-@CrossOrigin(origins = "*") // Permite que o Android acesse sem bloqueio de CORS
+@CrossOrigin(origins = "*")
 public class MedicoController {
 
     @Autowired
@@ -31,6 +31,13 @@ public class MedicoController {
         return repository.findAll();
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Medico> buscarPorId(@PathVariable Long id) {
+        return repository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @PostMapping
     public ResponseEntity<Medico> salvar(@RequestBody Medico medico) {
         Medico salvo = repository.save(medico);
@@ -39,20 +46,18 @@ public class MedicoController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Medico> atualizar(@PathVariable Long id, @RequestBody Medico medico) {
-    int atualizado = repository.atualizarMedicoProcedure(
-        id,
-        medico.getNome(),
-        medico.getCpf(),
-        medico.getCrm(),
-        medico.getEspecialidade()
-    );
-
-    if (atualizado > 0) {
-        medico.setId(id);
-        return ResponseEntity.ok(medico);
+        return repository.findById(id)
+                .map(existente -> {
+                    existente.setNome(medico.getNome());
+                    existente.setCpf(medico.getCpf());
+                    existente.setCrm(medico.getCrm());
+                    existente.setEspecialidade(medico.getEspecialidade());
+                    existente.setTelefone(medico.getTelefone());
+                    Medico atualizado = repository.save(existente);
+                    return ResponseEntity.ok(atualizado);
+                })
+                .orElse(ResponseEntity.notFound().build());
     }
-    return ResponseEntity.notFound().build();
-}
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> excluir(@PathVariable Long id) {
