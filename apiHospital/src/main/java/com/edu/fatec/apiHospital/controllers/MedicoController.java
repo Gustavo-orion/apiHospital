@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +27,9 @@ public class MedicoController {
     @Autowired
     private MedicoRepository repository;
 
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
     @GetMapping
     public List<Medico> listar() {
         return repository.findAll();
@@ -44,18 +48,27 @@ public class MedicoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(salvo);
     }
 
+   
     @PutMapping("/{id}")
     public ResponseEntity<Medico> atualizar(@PathVariable Long id, @RequestBody Medico medico) {
+        if (!repository.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        }
+
+        // Chama a stored procedure para atualizar
+        jdbcTemplate.update(
+            "CALL atualizar_medico(?, ?, ?, ?, ?, ?)",
+            id,
+            medico.getNome(),
+            medico.getCpf(),
+            medico.getCrm(),
+            medico.getEspecialidade(),
+            medico.getTelefone()
+        );
+
+        // Retorna o médico atualizado
         return repository.findById(id)
-                .map(existente -> {
-                    existente.setNome(medico.getNome());
-                    existente.setCpf(medico.getCpf());
-                    existente.setCrm(medico.getCrm());
-                    existente.setEspecialidade(medico.getEspecialidade());
-                    existente.setTelefone(medico.getTelefone());
-                    Medico atualizado = repository.save(existente);
-                    return ResponseEntity.ok(atualizado);
-                })
+                .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 

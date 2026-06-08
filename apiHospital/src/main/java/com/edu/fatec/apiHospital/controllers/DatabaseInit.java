@@ -38,5 +38,7 @@ public class DatabaseInit implements ApplicationRunner {
             """;
 
         jdbcTemplate.execute(sqlMedico);
+
+        
     }
 }
